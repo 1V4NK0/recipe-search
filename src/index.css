@@ -1,13 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+CZ:wght@100..400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Playwrite+CZ:wght@100..400&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Archivo", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #63474d;
+  color: #f9dec9;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #4e383d;
+  padding: 15px 30px;
+  align-items: center;
+}
+
+.logo {
+  font-size: 30px;
+  font-family: "Playwrite CZ";
+  font-weight: 500;
+  user-select: none;
+}
+
+.placeholder {
+  font-size: 35px;
+}
+
+.search-container input {
+  font-size: 20px;
+  border: none;
+  border-bottom: 2px solid #f9dec9;
+  background-color: #4e383d;
+  color: #f9dec9;
+}
+
+.search-container button {
+  font-size: 20px;
+  background-color: #a9927d;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #caae94;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+}
+
+span {
+  font-size: 40px;
+}
+
+.recipe-card {
+  border: 2px solid #f9dec9;
+  border-radius: 15px;
+  width: 300px;
+  background-color: #4e383d;
+  overflow: hidden;
+  margin: 0; /* Ensure no margin around the card */
+  padding: 0; /* Ensure no padding inside the card */
+  height: 320px;
+  transition: 0.3s ease;
+}
+
+.recipe-card img {
+  width: 100%;
+  height: auto; /* Ensures proper scaling */
+  /* object-fit: cover; */
+  margin: 0; /* Remove any margin */
+  border: none; /* Remove any border that could create a white line */
+  overflow: auto;
+}
+
+.results {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; /* Adjust this value to set the gap between items */
+  justify-items: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.recipe-card:hover {
+  scale: 1.03;
 }
