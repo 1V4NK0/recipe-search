@@ -22,6 +22,7 @@ code {
   background-color: #4e383d;
   padding: 15px 30px;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .logo {
@@ -33,6 +34,7 @@ code {
 
 .placeholder {
   font-size: 35px;
+  display: block;
 }
 
 .search-container input {
@@ -90,7 +92,7 @@ span {
 .results {
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px; /* Adjust this value to set the gap between items */
   justify-items: center;
   align-items: center;
@@ -99,4 +101,94 @@ span {
 
 .recipe-card:hover {
   scale: 1.03;
+}
+
+.selected-recipe {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #f9dec9;
+  border-radius: 8px;
+  color: #f9dec9;
+  padding: 24px;
+  max-width: 800px; /* Increased width */
+  margin: auto;
+  background-color: #4e383d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.selected-recipe img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.selected-recipe h2 {
+  margin: 16px 0;
+  color: #f9dec9;
+  text-align: center;
+}
+
+.selected-recipe p,
+.selected-recipe li {
+  margin: 8px 0;
+  color: #f9dec9;
+}
+
+.selected-recipe .summary,
+.selected-recipe .instructions {
+  font-size: 0.95rem;
+  color: #f9dec9;
+  text-align: justify;
+  line-height: 1.5;
+}
+
+.selected-recipe ul {
+  list-style-type: none;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.selected-recipe ul,
+.selected-recipe h3,
+.selected-recipe,
+.cuisine-time,
+.cooking-time {
+  text-align: left;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.selected-recipe h3 {
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #f9dec9;
+}
+
+.selected-recipe button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.selected-recipe button:hover {
+  background-color: #ff1a1a;
 }

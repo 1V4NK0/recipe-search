@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
+const api = process.env.REACT_APP_RECIPE_API;
 
 function App() {
-  const api = process.env.REACT_APP_RECIPE_API;
   const [isLoading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState({});
+  const [selectedId, setSelectedId] = useState();
   /////////////////////////////////////////////////
 
   async function fetchRecipe() {
@@ -27,6 +27,11 @@ function App() {
     }
   }
 
+  function handleSelect(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+    console.log(id);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     fetchRecipe();
@@ -36,7 +41,13 @@ function App() {
   return (
     <div className="App">
       <NavBar query={query} setQuery={setQuery} onSubmit={handleSubmit} />
-      {isLoading ? <h2>Loading...</h2> : <Results results={results} />}
+      {isLoading ? (
+        <h2>Loading...</h2>
+      ) : selectedId ? (
+        <DisplaySelected selectedId={selectedId} onSelect={handleSelect} />
+      ) : (
+        <Results results={results} onSelect={handleSelect} />
+      )}
     </div>
   );
 }
@@ -67,16 +78,17 @@ function NavBar({ query, setQuery, onSubmit }) {
   );
 }
 
-function Results({ results }) {
+function Results({ results, onSelect }) {
   return (
     <div className="results">
       {results.length > 0 ? (
-        //should be recipe card element
-        results.map((recipe, index) => (
+        results.map((recipe) => (
           <RecipeCard
-            key={results[index].id}
-            img={results[index].image}
-            title={results[index].title}
+            key={recipe.id}
+            id={recipe.id} // Pass the id prop here
+            img={recipe.image}
+            title={recipe.title}
+            onSelect={onSelect}
           />
         ))
       ) : (
@@ -86,9 +98,109 @@ function Results({ results }) {
   );
 }
 
-function RecipeCard({ title, id, img }) {
+function DisplaySelected({ selectedId, onSelect }) {
+  const [recipe, setRecipe] = useState({});
+
+  useEffect(() => {
+    async function getRecipe() {
+      try {
+        const res = await fetch(
+          `https://api.spoonacular.com/recipes/${selectedId}/information?apiKey=${api}`
+        );
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("Recipe not found");
+        setRecipe(data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    if (selectedId) {
+      getRecipe();
+    }
+  }, [selectedId]);
+
+  const {
+    cuisines,
+    extendedIngredients: ingredients,
+    image,
+    instructions,
+    readyInMinutes,
+    title,
+    summary,
+  } = recipe;
+
   return (
-    <div className="recipe-card" id={id}>
+    <div className="selected-recipe">
+      <button onClick={() => onSelect(null)}>X</button>
+      <img src={image} alt={title} />
+      <h2>{title}</h2>
+      <p className="summary" dangerouslySetInnerHTML={{ __html: summary }}></p>
+      <p className="cuisine-time"><strong>Cuisine:</strong> {cuisines?.join(', ') || 'N/A'}</p>
+      <p className="cooking-time"><strong>Cooking Time:</strong> {readyInMinutes} minutes</p>
+      <h3>Ingredients:</h3>
+      <ul>
+        {ingredients?.map((ingredient) => (
+          <li key={ingredient.id}>{ingredient.original}</li>
+        ))}
+      </ul>
+      <h3>Instructions</h3>
+      <p className="instructions" dangerouslySetInnerHTML={{ __html: instructions }}></p>
+    </div>
+  );
+}
+
+
+// function DisplaySelected({ selectedId, onSelect }) {
+//   const [recipe, setRecipe] = useState({});
+
+//   useEffect(() => {
+//     async function getRecipe() {
+//       try {
+//         const res = await fetch(
+//           `https://api.spoonacular.com/recipes/${selectedId}/information?apiKey=${api}`
+//         );
+//         const data = await res.json();
+//         if (data.Response === "False") throw new Error("Recepie not found");
+//         console.log(data);
+//         setRecipe(data);
+//       } catch (e) {
+//         console.log(e);
+//       }
+//     }
+
+//     if (selectedId) {
+//       getRecipe();
+//     }
+//   }, [selectedId]);
+
+//   const {
+//     cuisines,
+//     extendedIngredients: ingredients,
+//     image,
+//     instructions,
+//     readyInMinutes,
+//     title,
+//     summary,
+//   } = recipe;
+
+//   return (
+//     // <div className="display-selected">
+//     //   <img src={recipe.img} alt="" />
+//     //   <p>{recipe.title}</p>
+//     // </div>
+//     <div className="selected-recipe">
+//       <img src={image} alt={title} />
+//       <p>{title}</p>
+//       <p>{summary}</p>
+//       <button onClick={() => onSelect(null)}>X</button>
+//     </div>
+//   );
+// }
+
+function RecipeCard({ title, id, img, onSelect }) {
+  return (
+    <div className="recipe-card" id={id} onClick={() => onSelect(id)}>
       <img src={img} alt={title} />
       <h4>{title}</h4>
     </div>
